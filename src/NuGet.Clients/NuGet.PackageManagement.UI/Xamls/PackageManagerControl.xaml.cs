@@ -69,8 +69,13 @@ namespace NuGet.PackageManagement.UI
         private string _settingsKey;
         private IServiceBroker _serviceBroker;
 
+        internal PackageManagerViewModel ViewModel { get; private set; }
+
         private PackageManagerControl()
         {
+            ViewModel = new PackageManagerViewModel();
+            DataContext = ViewModel;
+
             InitializeComponent();
         }
 
