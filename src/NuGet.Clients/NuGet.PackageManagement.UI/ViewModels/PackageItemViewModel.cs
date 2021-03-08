@@ -27,7 +27,7 @@ namespace NuGet.PackageManagement.UI
 {
     // This is the model class behind the package items in the infinite scroll list.
     // Some of its properties, such as Latest Version, Status, are fetched on-demand in the background.
-    public class PackageItemViewModel : INotifyPropertyChanged, ISelectableItem
+    internal class PackageItemViewModel : INotifyPropertyChanged, ISelectableItem
     {
         private static readonly Common.AsyncLazy<IReadOnlyCollection<VersionInfoContextInfo>> LazyEmptyVersionInfo =
             AsyncLazy.New((IReadOnlyCollection<VersionInfoContextInfo>)Array.Empty<VersionInfoContextInfo>());
