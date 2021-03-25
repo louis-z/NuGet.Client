@@ -4813,7 +4813,7 @@ namespace Test.Utility
         ]
     },
     ""description"": ""A new package description"",
-    ""iconUrl"": ""http://icon_url_here_or_delete_this_line/"",
+    ""iconUrl"": ""$icon_image_file_path_within_the_package_here_or_delete_this_line$"",
     ""id"": ""afine"",
     ""language"": """",
     ""licenseExpression"": """",

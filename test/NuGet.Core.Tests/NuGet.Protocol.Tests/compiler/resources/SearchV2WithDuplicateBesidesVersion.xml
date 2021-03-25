@@ -27,7 +27,7 @@
       <d:Description>Package description</d:Description>
       <d:DownloadCount m:type="Edm.Int32">180</d:DownloadCount>
       <d:GalleryDetailsUrl>https://www.nuget.org/packages/afine/1.0.0</d:GalleryDetailsUrl>
-      <d:IconUrl>http://icon_url_here_or_delete_this_line/</d:IconUrl>
+      <d:IconUrl>$icon_image_file_path_within_the_package_here_or_delete_this_line$</d:IconUrl>
       <d:IsLatestVersion m:type="Edm.Boolean">true</d:IsLatestVersion>
       <d:IsAbsoluteLatestVersion m:type="Edm.Boolean">true</d:IsAbsoluteLatestVersion>
       <d:IsPrerelease m:type="Edm.Boolean">false</d:IsPrerelease>
@@ -74,7 +74,7 @@
       <d:Description>Package description</d:Description>
       <d:DownloadCount m:type="Edm.Int32">180</d:DownloadCount>
       <d:GalleryDetailsUrl>https://www.nuget.org/packages/afine/1.0.0</d:GalleryDetailsUrl>
-      <d:IconUrl>http://icon_url_here_or_delete_this_line/</d:IconUrl>
+      <d:IconUrl>$icon_image_file_path_within_the_package_here_or_delete_this_line$</d:IconUrl>
       <d:IsLatestVersion m:type="Edm.Boolean">true</d:IsLatestVersion>
       <d:IsAbsoluteLatestVersion m:type="Edm.Boolean">true</d:IsAbsoluteLatestVersion>
       <d:IsPrerelease m:type="Edm.Boolean">false</d:IsPrerelease>

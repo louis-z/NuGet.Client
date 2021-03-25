@@ -45,7 +45,7 @@ namespace NuGet.CommandLine.Test
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type=""expression"">MIT</license>
     <projectUrl>http://project_url_here_or_delete_this_line/</projectUrl>
-    <iconUrl>http://icon_url_here_or_delete_this_line/</iconUrl>
+    <iconUrl>$icon_image_file_path_within_the_package_here_or_delete_this_line$</iconUrl>
     <description>Package description</description>
     <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
     <copyright>$copyright$</copyright>
@@ -87,7 +87,7 @@ namespace NuGet.CommandLine.Test
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type=""expression"">MIT</license>
     <projectUrl>http://project_url_here_or_delete_this_line/</projectUrl>
-    <iconUrl>http://icon_url_here_or_delete_this_line/</iconUrl>
+    <iconUrl>$icon_image_file_path_within_the_package_here_or_delete_this_line$</iconUrl>
     <description>Package description</description>
     <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
     <copyright>$copyright$</copyright>
@@ -142,7 +142,7 @@ namespace NuGet.CommandLine.Test
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type=""expression"">MIT</license>
     <projectUrl>http://project_url_here_or_delete_this_line/</projectUrl>
-    <iconUrl>http://icon_url_here_or_delete_this_line/</iconUrl>
+    <iconUrl>$icon_image_file_path_within_the_package_here_or_delete_this_line$</iconUrl>
     <description>$description$</description>
     <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
     <copyright>$copyright$</copyright>
