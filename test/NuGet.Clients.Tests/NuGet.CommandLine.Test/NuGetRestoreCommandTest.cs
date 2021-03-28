@@ -1407,7 +1407,7 @@ EndProject";
                     string.Join(" ", args),
                     waitForExit: true,
                     environmentVariables: envVars);
-              
+                
                 var output = r.Item2 + " " + r.Item3;
 
                 // Assert
