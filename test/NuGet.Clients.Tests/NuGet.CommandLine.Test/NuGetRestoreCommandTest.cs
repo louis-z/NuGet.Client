@@ -23,7 +23,6 @@ using Xunit;
 
 namespace NuGet.CommandLine.Test
 {
-    [CollectionDefinition("Non-Parallel Collection", DisableParallelization = true)]
     public class NuGetRestoreCommandTest
     {
         private const int _failureCode = 1;
@@ -1397,14 +1396,18 @@ EndProject";
                 var args = new string[] { "restore", "-PackagesDirectory", "outputDir", "-Source", repositoryPath, "-nocache" };
 
                 // Act
-                var path = Environment.GetEnvironmentVariable("PATH");
-                Environment.SetEnvironmentVariable("PATH", null);
+                var envVars = new Dictionary<string, string>()
+                {
+                    { "PATH", null }
+                };
+
                 var r = CommandRunner.Run(
                     nugetexe,
                     workingPath,
                     string.Join(" ", args),
-                    waitForExit: true);
-                Environment.SetEnvironmentVariable("PATH", path);
+                    waitForExit: true,
+                    environmentVariables: envVars);
+              
                 var output = r.Item2 + " " + r.Item3;
 
                 // Assert
@@ -1457,14 +1460,17 @@ EndProject";
                     };
 
                 // Act
-                var path = Environment.GetEnvironmentVariable("PATH");
-                Environment.SetEnvironmentVariable("PATH", null);
+                var envVars = new Dictionary<string, string>()
+                {
+                    { "PATH", null }
+                };
+
                 var r = CommandRunner.Run(
                     nugetexe,
                     randomTestFolder,
                     string.Join(" ", args),
-                    waitForExit: true);
-                Environment.SetEnvironmentVariable("PATH", path);
+                    waitForExit: true,
+                    environmentVariables: envVars);
 
                 // Assert
                 var expectedPath = Path.Combine(

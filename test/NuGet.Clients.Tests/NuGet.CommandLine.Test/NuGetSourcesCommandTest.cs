@@ -10,7 +10,7 @@ using Xunit;
 
 namespace NuGet.CommandLine.Test
 {
-    [CollectionDefinition("Non-Parallel Collection", DisableParallelization = true)]
+    [Collection(nameof(NotThreadSafeResourceCollection))]
     public class NuGetSourcesCommandTest
     {
         [Fact]

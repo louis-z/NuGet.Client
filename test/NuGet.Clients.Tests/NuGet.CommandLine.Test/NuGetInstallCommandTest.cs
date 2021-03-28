@@ -19,7 +19,6 @@ using Xunit;
 
 namespace NuGet.CommandLine.Test
 {
-    [CollectionDefinition("Non-Parallel Collection", DisableParallelization = true)]
     public class NuGetInstallCommandTest
     {
         [Fact]
@@ -669,16 +668,18 @@ namespace NuGet.CommandLine.Test
                     "-Source",
                     repositoryPath };
 
+                var envVars = new Dictionary<string, string>()
+                {
+                    { "PATH", null }
+                };
+
                 // Act
-                var path = Environment.GetEnvironmentVariable("PATH");
-                Environment.SetEnvironmentVariable("PATH", null);
                 var r = CommandRunner.Run(
                     nugetexe,
                     workingPath,
                     string.Join(" ", args),
-                    waitForExit: true);
-
-                Environment.SetEnvironmentVariable("PATH", path);
+                    waitForExit: true,
+                    environmentVariables: envVars);
 
                 // Assert
                 Assert.Equal(0, r.Item1);
