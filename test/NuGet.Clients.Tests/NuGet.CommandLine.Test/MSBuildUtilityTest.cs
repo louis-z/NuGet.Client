@@ -16,6 +16,7 @@ using Xunit;
 
 namespace NuGet.CommandLine.Test
 {
+    [CollectionDefinition("Non-Parallel Collection", DisableParallelization = true)]
     public class MsBuildUtilityTest
     {
         // Test that when msbuildVersion is null, GetMsBuildDirectoryInternal returns the highest installed version.

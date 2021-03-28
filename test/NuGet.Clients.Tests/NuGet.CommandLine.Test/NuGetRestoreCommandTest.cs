@@ -23,6 +23,7 @@ using Xunit;
 
 namespace NuGet.CommandLine.Test
 {
+    [CollectionDefinition("Non-Parallel Collection", DisableParallelization = true)]
     public class NuGetRestoreCommandTest
     {
         private const int _failureCode = 1;
