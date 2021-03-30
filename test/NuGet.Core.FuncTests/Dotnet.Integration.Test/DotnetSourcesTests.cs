@@ -11,7 +11,7 @@ using Xunit;
 
 namespace Dotnet.Integration.Test
 {
-    [Collection("Dotnet Integration Tests")]
+    [Collection("Dotnet Integration Tests - Not Thread Safe")]
     public class DotnetSourcesTests
     {
         private readonly MsbuildIntegrationTestFixture _fixture;

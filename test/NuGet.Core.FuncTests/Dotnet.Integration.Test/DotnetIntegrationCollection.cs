@@ -12,4 +12,12 @@ namespace Dotnet.Integration.Test
         // to be the place to apply [CollectionDefinition] and all the
         // ICollectionFixture<> interfaces.
     }
+
+    [CollectionDefinition("Dotnet Integration Tests - Not Thread Safe", DisableParallelization = true)]
+    public class DotnetIntegrationNotThreadSafeCollection : ICollectionFixture<MsbuildIntegrationTestFixture>
+    {
+        // This class has no code, and is never created. Its purpose is simply
+        // to be the place to apply [CollectionDefinition] and all the
+        // ICollectionFixture<> interfaces.
+    }
 }
