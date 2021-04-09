@@ -121,6 +121,7 @@ namespace NuGet.DependencyResolver
 
             var node = new GraphNode<RemoteResolveResult>(libraryRange)
             {
+                // Probably needs the package namespaces configuration here.
                 // Resolve the dependency from the cache or sources
                 Item = await ResolverUtility.FindLibraryCachedAsync(
                     _context.FindLibraryEntryCache,

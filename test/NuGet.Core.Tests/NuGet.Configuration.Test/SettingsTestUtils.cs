@@ -123,6 +123,10 @@ namespace NuGet.Configuration.Test
             {
                 return FileClientCertItem_DeepEquals(setting1 as FileClientCertItem, setting2 as FileClientCertItem);
             }
+            else if (setting1 is NamespaceItem)
+            {
+                return NamespaceItem_DeepEquals(setting1 as NamespaceItem, setting2 as NamespaceItem);
+            }
 
             return false;
         }
@@ -288,6 +292,11 @@ namespace NuGet.Configuration.Test
         }
 
         private static bool FileClientCertItem_DeepEquals(FileClientCertItem item1, FileClientCertItem item2)
+        {
+            return ItemBase_DeepEquals(item1, item2);
+        }
+
+        private static bool NamespaceItem_DeepEquals(NamespaceItem item1, NamespaceItem item2)
         {
             return ItemBase_DeepEquals(item1, item2);
         }

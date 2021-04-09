@@ -1,0 +1,182 @@
+// Copyright(c) .NET Foundation.All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Xml.Linq;
+
+namespace NuGet.Configuration
+{
+    public class PackageSourceNamespacesItem : SettingItem
+    {
+        protected override bool CanHaveChildren => true;
+
+        public IList<NamespaceItem> Namespaces { get; }
+
+        public virtual string Key => Attributes[ConfigurationConstants.KeyAttribute];
+
+        protected override IReadOnlyCollection<string> RequiredAttributes { get; }
+    = IReadOnlyCollectionUtility.Create<string>(ConfigurationConstants.KeyAttribute);
+
+        protected void SetKey(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.PropertyCannotBeNullOrEmpty, nameof(Key)));
+            }
+
+            UpdateAttribute(ConfigurationConstants.KeyAttribute, value);
+        }
+
+        internal readonly IEnumerable<SettingBase> _parsedDescendants;
+
+        public PackageSourceNamespacesItem(string name, IEnumerable<NamespaceItem> namespaceItems)
+            : base()
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new ArgumentException(Resources.Argument_Cannot_Be_Null_Or_Empty, nameof(name));
+            }
+
+            if (namespaceItems == null || !namespaceItems.Any())
+            {
+                throw new ArgumentException("Package source namespace must have a namespace");
+            }
+
+            AddAttribute(ConfigurationConstants.NameAttribute, name);
+
+            Namespaces = new List<NamespaceItem>();
+
+            foreach (var @namespace in namespaceItems)
+            {
+                Namespaces.Add(@namespace);
+            }
+        }
+
+        internal PackageSourceNamespacesItem(XElement element, SettingsFile origin)
+            : base(element, origin)
+        {
+            _parsedDescendants = element.Nodes().Where(n => n is XElement || n is XText text && !string.IsNullOrWhiteSpace(text.Value))
+                .Select(e => SettingFactory.Parse(e, origin));
+
+            var parsedNamespaceItems = _parsedDescendants.OfType<NamespaceItem>().ToList();
+
+            if (parsedNamespaceItems.Count == 0)
+            {
+                throw new NuGetConfigurationException($"Package source namespace must have a namespace in {origin.ConfigFilePath}");
+            }
+
+            Namespaces = parsedNamespaceItems;
+        }
+
+        internal override void SetOrigin(SettingsFile origin)
+        {
+            base.SetOrigin(origin);
+
+            foreach (var @namespace in Namespaces)
+            {
+                @namespace.SetOrigin(origin);
+            }
+        }
+
+        internal override void RemoveFromSettings()
+        {
+            base.RemoveFromSettings();
+
+            foreach (var @namespace in Namespaces)
+            {
+                @namespace.RemoveFromSettings();
+            }
+        }
+
+        public override SettingBase Clone()
+        {
+            var newItem = new PackageSourceNamespacesItem(
+                Key,
+                Namespaces.Select(c => c.Clone() as NamespaceItem).ToArray());
+
+            if (Origin != null)
+            {
+                newItem.SetOrigin(Origin);
+            }
+
+            return newItem;
+        }
+
+        internal override XNode AsXNode()
+        {
+            if (Node is XElement)
+            {
+                return Node;
+            }
+
+            var element = new XElement(ElementName);
+
+            foreach (var packageNamespaceItem in Namespaces)
+            {
+                element.Add(packageNamespaceItem.AsXNode());
+            }
+
+            // Does this make sense?
+            foreach (var attr in Attributes)
+            {
+                element.SetAttributeValue(attr.Key, attr.Value);
+            }
+
+            return element;
+        }
+
+        internal override void Update(SettingItem other)
+        {
+            var packageSourceNamespaces = other as PackageSourceNamespacesItem;
+
+            if (!packageSourceNamespaces.Namespaces.Any())
+            {
+                throw new InvalidOperationException("A package source namespace must have namespaces.");
+            }
+
+            base.Update(other);
+
+            var otherNamespaces = packageSourceNamespaces.Namespaces.ToDictionary(c => c, c => c);
+            var immutableNamespaces = new List<NamespaceItem>(Namespaces);
+            foreach (var namespaceItem in immutableNamespaces)
+            {
+                if (otherNamespaces.TryGetValue(namespaceItem, out var otherChild))
+                {
+                    otherNamespaces.Remove(namespaceItem);
+                }
+
+                if (otherChild == null)
+                {
+                    Namespaces.Remove(namespaceItem);
+                    namespaceItem.RemoveFromSettings();
+                }
+                else if (namespaceItem is SettingItem item)
+                {
+                    item.Update(otherChild);
+                }
+            }
+
+            foreach (var newNamespaceItem in otherNamespaces)
+            {
+                var itemToAdd = newNamespaceItem.Value;
+                Namespaces.Add(itemToAdd);
+
+                if (Origin != null)
+                {
+                    itemToAdd.SetOrigin(Origin);
+
+                    if (Node != null)
+                    {
+                        itemToAdd.SetNode(itemToAdd.AsXNode());
+
+                        XElementUtility.AddIndented(Node as XElement, itemToAdd.Node);
+                        Origin.IsDirty = true;
+                    }
+                }
+            }
+        }
+    }
+}

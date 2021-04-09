@@ -86,7 +86,7 @@ namespace NuGet.Configuration
                     origin.ConfigFilePath));
             }
 
-            // Update attributes with propert casing
+            // Update attributes with proper casing
             UpdateAttribute(ConfigurationConstants.HashAlgorithm, HashAlgorithm.ToString().ToUpper());
             UpdateAttribute(ConfigurationConstants.AllowUntrustedRoot, AllowUntrustedRoot.ToString().ToLower());
         }

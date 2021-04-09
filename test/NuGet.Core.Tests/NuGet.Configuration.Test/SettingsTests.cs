@@ -2728,6 +2728,66 @@ namespace NuGet.Configuration.Test
             }
         }
 
+        [Fact]
+        public void TODONK_CheckWhereEmptyItemsAreAllowedVsNot()
+        {
+            // Check sources
+            // Check namespaces
+
+            // Arrange
+            var nugetConfigPath = "NuGet.Config";
+            var config = @"<?xml version=""1.0"" encoding=""utf-8""?>
+<configuration>
+    <SectionName>
+        <add key=""key1"" value=""value"" />
+    </SectionName>
+    <SectionName2>
+        <add key=""key"" value=""value"" />
+    </SectionName2>
+    <UnknownSection>
+        <UnknownItem meta1=""data1"" />
+        <OtherUnknownItem>
+        </OtherUnknownItem>
+    </UnknownSection>
+</configuration>";
+
+            using (var mockBaseDirectory = TestDirectory.Create())
+            {
+                SettingsTestUtils.CreateConfigurationFile(nugetConfigPath, mockBaseDirectory, config);
+                var settingsFile = new SettingsFile(mockBaseDirectory);
+                var settings = new Settings(new SettingsFile[] { settingsFile });
+
+                // Act & Assert
+                settings.AddOrUpdate(settingsFile, "SectionName", new AddItem("newKey", "value"));
+                settings.SaveToDisk();
+
+                var result = SettingsTestUtils.RemoveWhitespace(@"<?xml version=""1.0"" encoding=""utf-8""?>
+<configuration>
+    <SectionName>
+        <add key=""key1"" value=""value"" />
+        <add key=""newKey"" value=""value"" />
+    </SectionName>
+    <SectionName2>
+        <add key=""key"" value=""value"" />
+    </SectionName2>
+    <UnknownSection>
+        <UnknownItem meta1=""data1"" />
+        <OtherUnknownItem>
+        </OtherUnknownItem>
+    </UnknownSection>
+</configuration>");
+
+                SettingsTestUtils.RemoveWhitespace(File.ReadAllText(Path.Combine(mockBaseDirectory, nugetConfigPath))).Should().Be(result);
+
+                var section = settings.GetSection("SectionName");
+                section.Should().NotBeNull();
+
+                var item = section.GetFirstItemWithAttribute<AddItem>("key", "newKey");
+                item.Should().NotBeNull();
+                item.Value.Should().Be("value");
+            }
+        }
+
         private static string GetOriginDirectoryPath()
         {
             if (RuntimeEnvironmentHelper.IsWindows)

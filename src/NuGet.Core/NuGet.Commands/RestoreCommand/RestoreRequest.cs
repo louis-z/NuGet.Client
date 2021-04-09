@@ -27,6 +27,7 @@ namespace NuGet.Commands
             RestoreCommandProviders dependencyProviders,
             SourceCacheContext cacheContext,
             ClientPolicyContext clientPolicyContext,
+            PackageNamespacesConfiguration packageNamespacesConfiguration,
             ILogger log)
         {
 
@@ -173,6 +174,8 @@ namespace NuGet.Commands
         public XmlDocFileSaveMode XmlDocFileSaveMode { get; set; } = PackageExtractionBehavior.XmlDocFileSaveMode;
 
         public ClientPolicyContext ClientPolicyContext { get; }
+
+        public PackageNamespacesConfiguration PackageNamespacesConfiguration { get; }
 
         /// <remarks>
         /// This property should only be used to override the default verifier on tests.
